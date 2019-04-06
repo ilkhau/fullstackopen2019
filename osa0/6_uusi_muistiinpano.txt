@@ -1,0 +1,16 @@
+note over selain:
+Käyttäjä syöttää tallennettavan tiedon.
+Selain suorittaa js-koodia ja kutsuu palvelinta.
+end note
+
+selain->palvelin: HTTP POST https://fullstack-exampleapp.herokuapp.com/new_note_spa [{payload: note: <uusi_note>, date: <date>}]
+note over palvelin:
+Palvelin tallentaa saadun noten.
+end note
+
+palvelin-->selain: HTTP Status 201 Created
+
+note over selain:
+selain alkaa suorittaa js-koodia
+joka renderöi lisätyn muistiinpanon näytölle
+end note
