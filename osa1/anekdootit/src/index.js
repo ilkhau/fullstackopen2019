@@ -21,7 +21,7 @@ const Anecdote = ({anecdote, votes}) => {
 
 const App = ({anecdotes}) => {
     const [selected, setSelected] = useState(0);
-    const [points, setPoints] = useState(Array.from(Array(anecdotes.length), () => 0));
+    const [votes, setVotes] = useState(Array.from(Array(anecdotes.length), () => 0));
 
     const randomAnecdote = () => () => {
         let newValue = Math.floor((Math.random() * anecdotes.length));
@@ -32,21 +32,30 @@ const App = ({anecdotes}) => {
     };
 
     const addVote = () => () => {
-        console.log(points);
-        const copy = { ...points }
+        const copy = {...votes}
         copy[selected] += 1;
-        setPoints(copy);
+        setVotes(copy);
     };
 
-    console.log(points);
+    const mostVotes = () => {
+        let maxIndex = 0;
+        for (let i = 1; i < anecdotes.length; i++) {
+            if (votes[i] > votes[maxIndex]) {
+                maxIndex = i;
+            }
+        }
+
+        return maxIndex;
+    };
 
     return (
         <div>
-            <Anecdote anecdote={anecdotes[selected]} votes={points[selected]} />
+            <Anecdote anecdote={anecdotes[selected]} votes={votes[selected]}/>
             <div>
                 <Button handler={addVote()} text="vote"/>
                 <Button handler={randomAnecdote()} text="next anecdote"/>
             </div>
+            <Anecdote anecdote={anecdotes[mostVotes()]} votes={votes[mostVotes()]}/>
         </div>
     )
 };
