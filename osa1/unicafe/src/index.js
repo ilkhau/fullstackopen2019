@@ -13,11 +13,10 @@ const Header = ({caption}) => {
 
 const Statistic = ({text, result}) => {
     return (
-        <div>
-            <p>
-                {text} {result}
-            </p>
-        </div>
+        <tr>
+            <td>{text}</td>
+            <td>{result}</td>
+        </tr>
     )
 };
 
@@ -46,11 +45,16 @@ const Statistics = ({good, neutral, bad}) => {
 
     return (
         <div>
-            <Statistic text={txtGood} result={good}/>
-            <Statistic text={txtNeutral} result={neutral}/>
-            <Statistic text={txtBad} result={bad}/>
-            <Statistic text={txtAvg} result={average()}/>
-            <Statistic text={txtPos} result={positivePercentage()}/>
+            <table>
+                <thead/>
+                <tbody>
+                <Statistic text={txtGood} result={good}/>
+                <Statistic text={txtNeutral} result={neutral}/>
+                <Statistic text={txtBad} result={bad}/>
+                <Statistic text={txtAvg} result={average()}/>
+                <Statistic text={txtPos} result={positivePercentage()}/>
+                </tbody>
+            </table>
         </div>
     )
 };
