@@ -4,3 +4,5 @@ osa1/unicafe/.idea/**/*
 osa1/unicafe/node_modules/**/*
 osa1/anekdootit/.idea/**/*
 osa1/anekdootit/node_modules/**/*
+osa2/**/.idea/**/*
+osa2/**/node_modules/**/*
