@@ -1,6 +1,9 @@
 import React, {useState} from 'react';
 import './App.css';
-import Person from './components/Person'
+import Persons from './components/Persons'
+import Filter from './components/Filter'
+import Caption from './components/Caption'
+import PersonForm from "./components/PersonForm";
 
 const App = () => {
     const [persons, setPersons] = useState([
@@ -44,46 +47,14 @@ const App = () => {
         setNewNumber(event.target.value);
     };
 
-    const personList = () => {
-
-        let filterFn = (person) => true;
-
-        if(nameFilter.length > 0) {
-            filterFn = (person) => {
-                const val = person.name.toLowerCase().includes(nameFilter.toLocaleLowerCase());
-                console.log(person, val);
-                return val;
-            }
-        }
-
-        return persons.filter(person => filterFn(person)).map(person => {
-            console.log(person);
-            return <Person key={person.name} person={person} />
-        });
-    };
-
     return (
         <div>
-            <h2>Puhelinluettelo</h2>
-            <div>
-                rajaa näytettäviä: <input value={nameFilter} onChange={nameFilterChange}/>
-            </div>
-            <form>
-                <h2>Lisää uusi</h2>
-                <div>
-                    nimi: <input value={newName} onChange={nameChange}/>
-                </div>
-                <div>
-                    numero: <input value={newNumber} onChange={numberChange}/>
-                </div>
-                <div>
-                    <button type="submit" onClick={addName}>lisää</button>
-                </div>
-            </form>
-            <h2>Numerot</h2>
-            <ul>
-                {personList()}
-            </ul>
+            <Caption caption="Puhelinluettelo" />
+            <Filter val={nameFilter} changeHandler={nameFilterChange} />
+            <PersonForm name={newName} nameHandler={nameChange}
+                        number={newNumber} numberHandler={numberChange}
+                        submitHandler={addName} />
+            <Persons persons={persons} nameFilter={nameFilter} />
         </div>
     )
 
