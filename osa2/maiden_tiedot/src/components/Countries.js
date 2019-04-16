@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {Caption, SmallCaption} from "./Caption";
+import CityWeather from './CityWeather'
 import Button from "./Button.cs";
 
 const Country = ({country, details}) => {
@@ -22,6 +23,7 @@ const CountryDetail = ({country}) => {
             <SmallCaption caption="Languages"/>
             <Languages languages={country.languages}/>
             <img src={country.flag} width="100" height="50" alt="flag"/>
+            <CityWeather country={country} />
         </>
     );
 };
@@ -49,7 +51,6 @@ const Countries = ({countries, countryFilter, activateCountry}) => {
         if (countryFilter.length > 0) {
             filterFn = (country) => {
                 const val = country.name.toLowerCase().includes(countryFilter.toLocaleLowerCase());
-                console.log(country, val);
                 return val;
             }
         }

@@ -27,7 +27,7 @@ const App = () => {
         axios
             .get(url)
             .then(response => {
-                console.log('promise fulfilled');
+                console.log('Country info fetched');
                 setCountries(response.data);
             })
     };
