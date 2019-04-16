@@ -1,10 +1,15 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Caption, SmallCaption} from "./Caption";
+import Button from "./Button.cs";
 
-const Country = ({country}) => {
+const Country = ({country, details}) => {
     console.log(country);
+
     return (
-        <li>{country.name} </li>
+        <li>
+            {country.name}
+            <Button text="show" handler={details}/>
+        </li>
     )
 };
 
@@ -15,25 +20,31 @@ const CountryDetail = ({country}) => {
             <p>Capital: {country.capital}</p>
             <p>Population: {country.population}</p>
             <SmallCaption caption="Languages"/>
-            <Languages languages={country.languages} />
-            <img src={country.flag} width="100" height="50" alt="flag" />
+            <Languages languages={country.languages}/>
+            <img src={country.flag} width="100" height="50" alt="flag"/>
         </>
     );
 };
 
 const Languages = ({languages}) => {
-  return(
-      <ul>
-          {languages.map(lang => <li key={lang.iso639_1}>{lang.name}</li>)}
-      </ul>
-  )
+    return (
+        <ul>
+            {languages.map(lang => <li key={lang.iso639_1}>{lang.name}</li>)}
+        </ul>
+    )
 };
 
-const Countries = ({countries, countryFilter}) => {
+const Countries = ({countries, countryFilter, activateCountry}) => {
+
+    const activeCountrySelected = (country) => (event) => {
+        console.log(`Active country selected: ${country.name}`);
+        event.preventDefault();
+        activateCountry(country);
+    };
 
     const countryList = () => {
 
-        let filterFn = (person) => true;
+        let filterFn = (country) => true;
 
         if (countryFilter.length > 0) {
             filterFn = (country) => {
@@ -54,7 +65,11 @@ const Countries = ({countries, countryFilter}) => {
                     <ul>
                         {filteredCountries.map(country => {
                             console.log(country);
-                            return <Country key={country.alpha2Code} country={country}/>
+                            return (
+                                <div>
+                                    <Country key={country.alpha2Code} country={country}
+                                             details={activeCountrySelected(country)}/>
+                                </div>)
                         })}
                     </ul>
                 </>)

@@ -6,35 +6,43 @@ import Countries from "./components/Countries";
 
 const App = () => {
 
-  const [countryFilter, setCountryFilter] = useState('');
-  const [countries, setCountries] = useState([]);
+    const [countryFilter, setCountryFilter] = useState('');
+    const [countries, setCountries] = useState([]);
 
-  const countryFilterChanged = (event) => {
-    console.log(`Filter: ${event.target.value}`);
-    setCountryFilter(event.target.value);
-    fetchCountries();
-  };
+    const activateCountry = (country) => {
+        console.log(`Country activated ${country.name}`);
+        setCountryFilter(country.name);
+        fetchCountries();
+    };
 
-  const fetchCountries = () => {
-    const url = 'https://restcountries.eu/rest/v2/all';
-    console.log(`Fetching country information from ${url}`);
-    axios
-        .get(url)
-        .then(response => {
-          console.log('promise fulfilled')
-          setCountries(response.data)
-        })
-  };
+    const countryFilterChanged = (event) => {
+        console.log(`Filter: ${event.target.value}`);
+        setCountryFilter(event.target.value);
+        fetchCountries();
+    };
 
-  useEffect(fetchCountries, []);
+    const fetchCountries = () => {
+        const url = 'https://restcountries.eu/rest/v2/all';
+        console.log(`Fetching country information from ${url}`);
+        axios
+            .get(url)
+            .then(response => {
+                console.log('promise fulfilled');
+                setCountries(response.data);
+            })
+    };
 
-  return(
+    useEffect(fetchCountries, []);
 
-      <div>
-        <Filter text="Find countries: " val={countryFilter} changeHandler={countryFilterChanged}/>
-        <Countries countries={countries} countryFilter={countryFilter}/>
-      </div>
-  )
+    return (
+
+        <div>
+            <Filter text="Find countries: " val={countryFilter} changeHandler={countryFilterChanged}/>
+            <Countries countries={countries}
+                       countryFilter={countryFilter} activateCountry={activateCountry}
+            />
+        </div>
+    )
 };
 
 export default App;
