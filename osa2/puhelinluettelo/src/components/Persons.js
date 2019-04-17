@@ -23,7 +23,7 @@ const Persons = ({persons, nameFilter}) => {
         }
 
         return persons.filter(person => filterFn(person)).map(person => {
-            console.log(person);
+            console.log(JSON.stringify(person));
             return <Person key={person.name} person={person}/>
         });
     };

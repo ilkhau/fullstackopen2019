@@ -1,21 +1,33 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import './App.css';
 import Persons from './components/Persons'
 import Filter from './components/Filter'
 import Caption from './components/Caption'
 import PersonForm from "./components/PersonForm";
+import axios from 'axios';
 
 const App = () => {
-    const [persons, setPersons] = useState([
-        { name: 'Arto Hellas', number: '040-123456' },
-        { name: 'Martti Tienari', number: '040-123456' },
-        { name: 'Arto Järvinen', number: '040-123456' },
-        { name: 'Lea Kutvonen', number: '040-123456' }
-    ])
 
+    const api = "http://localhost:3001/persons";
+
+    const [persons, setPersons] = useState([]);
     const [newName, setNewName] = useState('');
     const [newNumber, setNewNumber] = useState('');
     const [nameFilter, setNewNameFilter] = useState('');
+
+    const fetchNames = () => {
+
+        axios.get(api)
+            .then(resp => {
+                console.log("Persons fetched");
+                setPersons(resp.data);
+            })
+            .catch(err => {
+               console.log("Cannot fetch persons ", err);
+            });
+    };
+
+    useEffect(fetchNames, []);
 
     const addName = (event) => {
         event.preventDefault();
@@ -30,7 +42,12 @@ const App = () => {
             return;
         }
 
-        setPersons(persons.concat(newPerson));
+        axios.post(api, newPerson)
+            .then(resp => {
+                console.log(resp);
+                setPersons(persons.concat(resp.data));
+            });
+
         setNewName('');
         setNewNumber('');
     };
