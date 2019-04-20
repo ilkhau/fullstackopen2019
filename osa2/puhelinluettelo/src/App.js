@@ -25,14 +25,21 @@ const App = () => {
         event.preventDefault();
 
         if (persons.some(person => person.name === newName)) {
-            alert(`${newName} on jo luettelossa`);
-            return;
+            if (window.confirm(`${newName} on jo luettelossa, korvataanko vanha nimi uudella?`) == false) {
+                return;
+            }
+
+            const newPerson = {...persons.find(p => p.name === newName), number: newNumber};
+            personservice.updatePerson(newPerson)
+                .then(up => setPersons(persons.map(p => p.id !== newPerson.id ? p : newPerson)));
+        } else {
+
+            personservice.addPerson(newName, newNumber)
+                .then(newPerson => {
+                    setPersons(persons.concat(newPerson));
+                });
         }
 
-        personservice.addPerson(newName, newNumber)
-            .then(newPerson => {
-                setPersons(persons.concat(newPerson));
-            });
 
         setNewName('');
         setNewNumber('');
@@ -50,6 +57,20 @@ const App = () => {
         setNewNumber(event.target.value);
     };
 
+    const deletePerson = (id) => (event) => {
+        event.preventDefault();
+
+        const name = persons.find(person => person.id === id).name;
+
+        if (window.confirm(`Poistetaanko ${name}`)) {
+            personservice.deletePerson(id)
+                .then(id => {
+                    console.log("Person deleted");
+                    setPersons(persons.filter(person => person.id !== id));
+                })
+        }
+    };
+
     return (
         <div>
             <Caption caption="Puhelinluettelo"/>
@@ -57,7 +78,7 @@ const App = () => {
             <PersonForm name={newName} nameHandler={nameChange}
                         number={newNumber} numberHandler={numberChange}
                         submitHandler={addName}/>
-            <Persons persons={persons} nameFilter={nameFilter}/>
+            <Persons persons={persons} nameFilter={nameFilter} deleteHandler={deletePerson}/>
         </div>
     )
 

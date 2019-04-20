@@ -1,14 +1,18 @@
 import React from 'react';
 import Caption from './Caption'
+import Button from './Button'
 
-const Person = ({person}) => {
+const Person = ({person, deleteHandler}) => {
     console.log(person);
     return (
-        <li>{person.name} {person.number}</li>
+        <li>
+            {person.name} {person.number}
+            <Button text="poista" handler={deleteHandler(person.id)} />
+        </li>
     )
 };
 
-const Persons = ({persons, nameFilter}) => {
+const Persons = ({persons, nameFilter, deleteHandler}) => {
 
     const personList = () => {
 
@@ -24,7 +28,7 @@ const Persons = ({persons, nameFilter}) => {
 
         return persons.filter(person => filterFn(person)).map(person => {
             console.log(JSON.stringify(person));
-            return <Person key={person.name} person={person}/>
+            return <Person key={person.name} person={person} deleteHandler={deleteHandler}/>
         });
     };
 

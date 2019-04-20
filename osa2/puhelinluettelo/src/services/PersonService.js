@@ -27,4 +27,24 @@ const addPerson = (name, number) => {
         });
 };
 
-export default {getAll, addPerson};
+const deletePerson = (id) => {
+    const deleteUrl = `${baseUrl}/${id}`;
+    console.log(`Sending delete to ${deleteUrl}`);
+
+    return axios.delete(deleteUrl)
+        .then(result => id);
+};
+
+const updatePerson = (person) => {
+
+    const updateUrl = `${baseUrl}/${person.id}`;
+    console.log(`Sending update to ${updateUrl}`);
+
+    return axios.put(updateUrl, person)
+        .then(resp => {
+            console.log("Updated!!!");
+            return resp.data;
+        });
+};
+
+export default {getAll, addPerson, deletePerson, updatePerson};
