@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {Caption, SmallCaption} from "./Caption";
 import CityWeather from './CityWeather'
-import Button from "./Button.cs";
+import Button from "./Button";
 
 const Country = ({country, details}) => {
     console.log(country);
