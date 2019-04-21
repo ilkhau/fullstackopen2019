@@ -37,14 +37,18 @@ const App = () => {
                 .then(up => {
                     setPersons(persons.map(p => p.id !== newPerson.id ? p : newPerson));
                     showNote(`Henkilö ${up.name} päivitettiin`, 'success');
-                });
+                }).catch(err => {
+                showNote(`Virhe henkilön ${newName} päivittämisessä`, 'error');
+            });
         } else {
 
             personservice.addPerson(newName, newNumber)
                 .then(newPerson => {
                     setPersons(persons.concat(newPerson));
                     showNote(`Henkilö ${newPerson.name} lisättiin`, 'success');
-                });
+                }).catch(err => {
+                showNote(`Virhe henkilön ${newName} lisäämisessä`, 'error');
+            });
         }
 
 
@@ -79,16 +83,18 @@ const App = () => {
     const deletePerson = (id) => (event) => {
         event.preventDefault();
 
-        const name = persons.find(person => person.id === id).name;
+        const person = persons.find(p => p.id === id);
 
-        if (window.confirm(`Poistetaanko ${name}`)) {
+        if (window.confirm(`Poistetaanko ${person.name}`)) {
             personservice.deletePerson(id)
                 .then(id => {
                     console.log("Person deleted");
-                    const person = persons.find(p => p.id === id);
-                    setPersons(persons.filter(person => person.id !== id));
                     showNote(`Henkilö ${person.name} poistettiin`, 'success');
                 })
+                .catch(err => {
+                    showNote(`Henkilö ${person.name} oli jo poistettu`, 'error');
+                })
+                .finally(() => setPersons(persons.filter(p => p.id !== person.id)));
         }
     };
 
