@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseUrl = "http://localhost:3001/persons";
+const baseUrl = "/api/persons";
 
 const getAll = () => {
     return axios.get(baseUrl)
@@ -24,6 +24,9 @@ const addPerson = (name, number) => {
         .then(resp => {
             console.log(resp);
             return resp.data;
+        }).catch(err => {
+            console.log(err.response.data.error);
+            throw new Error(err.response.data.error);
         });
 };
 
@@ -44,6 +47,9 @@ const updatePerson = (person) => {
         .then(resp => {
             console.log("Updated!!!");
             return resp.data;
+        }).catch(err => {
+            console.log(err.response.data.error);
+            throw new Error(err.response.data.error);
         });
 };
 

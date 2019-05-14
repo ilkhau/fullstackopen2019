@@ -37,8 +37,12 @@ const App = () => {
                 .then(up => {
                     setPersons(persons.map(p => p.id !== newPerson.id ? p : newPerson));
                     showNote(`Henkilö ${up.name} päivitettiin`, 'success');
+
+                    setNewName('');
+                    setNewNumber('');
+
                 }).catch(err => {
-                showNote(`Virhe henkilön ${newName} päivittämisessä`, 'error');
+                showNote(`Virhe henkilön ${newName} päivittämisessä: ${err.message}`, 'error');
             });
         } else {
 
@@ -46,14 +50,14 @@ const App = () => {
                 .then(newPerson => {
                     setPersons(persons.concat(newPerson));
                     showNote(`Henkilö ${newPerson.name} lisättiin`, 'success');
+
+                    setNewName('');
+                    setNewNumber('');
                 }).catch(err => {
-                showNote(`Virhe henkilön ${newName} lisäämisessä`, 'error');
+                console.log(err);
+                showNote(`Virhe henkilön ${newName} lisäämisessä: ${err.message}`, 'error');
             });
         }
-
-
-        setNewName('');
-        setNewNumber('');
     };
 
     const showNote = (text, type) => {
